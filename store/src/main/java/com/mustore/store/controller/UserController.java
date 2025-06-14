@@ -33,8 +33,13 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody User loginRequest) {
-         User user = userRepository.findByEmail(loginRequest.getEmail());
-
+        System.out.println("Login attempt: email=" + loginRequest.getEmail() + ", pass=" + loginRequest.getPass());
+        User user = userRepository.findByEmail(loginRequest.getEmail());
+        if (user != null) {
+            System.out.println("User found: email=" + user.getEmail() + ", pass=" + user.getPass());
+        } else {
+            System.out.println("User not found for email: " + loginRequest.getEmail());
+        }
         if (user != null && user.getPass().equals(loginRequest.getPass())) {
             return ResponseEntity.ok(user.getEmail());
         } else {
